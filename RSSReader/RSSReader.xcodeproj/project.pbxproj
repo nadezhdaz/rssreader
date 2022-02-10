@@ -153,11 +153,11 @@
 				41B2A2A627A98827006A4CF6 /* Services */,
 				410EA25227A8A86300A820C3 /* Utils */,
 				410EA24B27A8A6AD00A820C3 /* Models */,
+				410EA23527A8179C00A820C3 /* Controllers */,
 				410FCCC427A2F3E400668248 /* AppDelegate.h */,
 				410FCCC527A2F3E400668248 /* AppDelegate.m */,
 				410FCCC727A2F3E400668248 /* SceneDelegate.h */,
 				410FCCC827A2F3E400668248 /* SceneDelegate.m */,
-				410EA23527A8179C00A820C3 /* Controllers */,
 				410FCCD027A2F3E600668248 /* Assets.xcassets */,
 				410FCCD227A2F3E600668248 /* LaunchScreen.storyboard */,
 				410FCCD527A2F3E600668248 /* Info.plist */,
@@ -525,6 +525,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HPK5P2C2Q2;
 				INFOPLIST_FILE = RSSReader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -544,6 +545,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HPK5P2C2Q2;
 				INFOPLIST_FILE = RSSReader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

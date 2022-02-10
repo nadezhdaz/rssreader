@@ -10,6 +10,7 @@
 @interface RSSListViewController ()
 
 @property (nonatomic, retain) UITableView *listTableView;
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) RSSListViewModel *viewModel;
 
 @end
@@ -21,11 +22,13 @@
     [self.view setBackgroundColor: UIColor.whiteColor];
     [self setupNavigationItems];
     [self setupTableView];
+    [self setupActivityIndicator];
+    [self didStartLoading];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.viewModel = [[[RSSListViewModel alloc] init] autorelease];
+    self.viewModel = [RSSListViewModel new];
     self.viewModel.viewDelegate = self;
 }
 
@@ -36,7 +39,7 @@
 }
 
 - (void) setupTableView {
-    self.listTableView = [[[UITableView alloc] initWithFrame:CGRectZero] autorelease];
+    self.listTableView = [[UITableView alloc] initWithFrame:CGRectZero];
     [self.listTableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"TopicsListCellId"];
     self.listTableView.dataSource = self;
     self.listTableView.delegate = self;
@@ -50,6 +53,14 @@
         [self.listTableView.trailingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.trailingAnchor constant:0.0],
         [self.listTableView.bottomAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.bottomAnchor constant:0.0]
     ]];
+}
+
+- (void) setupActivityIndicator {
+    self.activityIndicator = [UIActivityIndicatorView new];
+    [self.activityIndicator setBounds: self.view.frame];
+    [self.activityIndicator setCenter: self.view.center];
+    self.activityIndicator.hidesWhenStopped = true;
+    [self.view addSubview:self.activityIndicator];
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -81,6 +92,7 @@
 
 - (void)dealloc {
     [_listTableView release];
+    [_activityIndicator release];
     [_viewModel release];
     
     [super dealloc];
@@ -92,9 +104,26 @@
 
 #pragma mark - RSSListViewModelDelegate Methods
 
+- (void)didStartLoading {
+    if (@available(iOS 13.0, *)) {
+        [self.activityIndicator startAnimating];        
+    } else {
+        UIApplication* app = [UIApplication sharedApplication];
+        app.networkActivityIndicatorVisible = true;
+    }
+}
+
 - (void)didFailWithError:(NSError *)error {
+    if (@available(iOS 13.0, *)) {
+        if (self.activityIndicator.isAnimating) {
+            [self.activityIndicator stopAnimating];
+        }
+    } else {
+        UIApplication* app = [UIApplication sharedApplication];
+        app.networkActivityIndicatorVisible = false;
+    }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                             message:[NSString stringWithFormat:@"%@", error.debugDescription]
+                                                                             message:[NSString stringWithFormat:@"%@", error.localizedDescription]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
@@ -102,11 +131,16 @@
 }
 
 - (void)didFinishLoading {
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.listTableView reloadData];
-        [weakSelf.listTableView layoutIfNeeded];
-    });
+    if (@available(iOS 13.0, *)) {
+        if (self.activityIndicator.isAnimating) {
+            [self.activityIndicator stopAnimating];
+        }
+    } else {
+        UIApplication* app = [UIApplication sharedApplication];
+        app.networkActivityIndicatorVisible = false;
+    }
+    [self.listTableView reloadData];
+    [self.listTableView layoutIfNeeded];
 }
 
 @end

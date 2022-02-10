@@ -13,6 +13,7 @@
 
 @protocol RSSListViewModelDelegate <NSObject>
 
+- (void) didStartLoading;
 - (void) didFinishLoading;
 - (void) didFailWithError: (NSError *)error;
 
@@ -20,7 +21,7 @@
 
 @interface RSSListViewModel : NSObject
 
-@property (nonatomic, weak) id <RSSListViewModelDelegate> viewDelegate;
+@property (nonatomic, weak) NSObject<RSSListViewModelDelegate>* viewDelegate;
 
 -(NSInteger)numberOfRows;
 -(NSString *)titleForFeed;

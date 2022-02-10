@@ -60,21 +60,21 @@
 #pragma mark - Private Methods
 
 - (void)callFeedService {
-    __weak typeof(self) weakSelf = self;
     [self.service retrieveFeed:^(NSArray<RSSEntry *> *entries, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
             if (entries) {
-                weakSelf.topicsList = [entries copy];
-                weakSelf.networkError = nil;                
-                [weakSelf.viewDelegate didFinishLoading];
-                
+                self.topicsList = [entries copy];
+                self.networkError = nil;
+                if ([self.viewDelegate respondsToSelector:@selector(didFinishLoading)]) {
+                    [self.viewDelegate performSelectorOnMainThread:@selector(didFinishLoading) withObject:nil waitUntilDone:false];
+                }
             } else {
-                weakSelf.topicsList = nil;
-                weakSelf.networkError = error;
-                [weakSelf.viewDelegate didFailWithError:error];
+                self.topicsList = nil;
+                self.networkError = error;
+                if ([self.viewDelegate respondsToSelector:@selector(didFailWithError:)]) {
+                    [self.viewDelegate performSelectorOnMainThread:@selector(didFailWithError:) withObject:error waitUntilDone:[NSThread isMainThread]];
+                }
             }
-        });
-    }];
+        }];
 }
 
 @end

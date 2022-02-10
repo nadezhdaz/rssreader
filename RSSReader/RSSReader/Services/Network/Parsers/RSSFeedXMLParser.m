@@ -20,11 +20,14 @@
 
 @implementation RSSFeedXMLParser
 
-- (void)parseEntries:(NSData *)data fromUrl:(NSURL *)url completion:(void (^)(NSArray<RSSEntry *> *, NSError *))completion {
-    self.completion = completion;
-    NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:url] autorelease]; //[[[NSXMLParser alloc] initWithData:data] autorelease];
-    parser.delegate = self;
-    [parser parse];
+- (void)parseWithParameters: (NSDictionary *)parameters {
+    @autoreleasepool {
+        self.completion = parameters[@"completion"];
+        NSURL *url = [NSURL URLWithString:parameters[@"url"]];
+        NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:url] autorelease]; //[[[NSXMLParser alloc] initWithData:data] autorelease];
+        parser.delegate = self;
+        [parser parse];
+    }
 }
 
 #pragma mark - NSXMLParserDelegate

@@ -51,7 +51,10 @@
         //NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
         //NSData *reEncodedData = [dataString dataUsingEncoding:NSUTF8StringEncoding];
         
-        [self.parser parseEntries:data fromUrl:url completion:completion];
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjects:
+                                    [NSArray arrayWithObjects:self.feedUrl,[completion copy],nil] forKeys:[NSArray arrayWithObjects:@"url",@"completion", nil]];
+        [NSThread detachNewThreadSelector:@selector(parseWithParameters:) toTarget:self.parser withObject:parameters];
+        //[self.parser parsefromUrl:url completion:completion];
         
     }];
     
