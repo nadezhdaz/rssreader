@@ -35,6 +35,27 @@
 }
 
 - (void)retrieveFeed:(void (^)(NSArray<RSSEntry *> *, NSError *)) completion {
+    __weak typeof(self) weakSelf = self;
+    NSError *error = nil;
+    NSURL *url = [NSURL URLWithString:self.feedUrl];
+    
+    NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error];
+    
+    if (error) {
+        completion(nil, error);
+        return;
+    }
+    
+    if ([self.parser respondsToSelector:@selector(parseWithData:completion:)]) {
+        NSThread *thread = [[[NSThread alloc] initWithBlock:^{
+            [weakSelf.parser parseWithData:data completion:completion];
+        }] autorelease];
+        [thread start];
+    }
+}
+
+/*
+- (void)retrieveFeed:(void (^)(NSArray<RSSEntry *> *, NSError *)) completion {
     NSURL *url = [NSURL URLWithString:self.feedUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"GET";
@@ -59,7 +80,7 @@
     }];
     
     [dataTask resume];
-}
+}*/
 
 - (void)dealloc {
     [_session release];

@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSSFeedXMLParser : NSObject
 
-- (void)parsefromUrl:(NSURL *)url completion:(void(^)(NSArray<RSSEntry *> *, NSError *))completion;
 - (void)parseWithParameters: (NSDictionary *)dictionary;
+- (void)parseWithData: (NSData *)data completion: (void (^)(NSArray<RSSEntry *> *, NSError *)) completion;
 
 @end
 

@@ -15,7 +15,8 @@
 
 - (void) didStartLoading;
 - (void) didFinishLoading;
-- (void) didFailWithError: (NSError *)error;
+//- (void) didFailWithError: (NSError *)error;
+- (void) didFailWithErrorMessage:(NSString *)message;
 
 @end
 
@@ -26,5 +27,6 @@
 -(NSInteger)numberOfRows;
 -(NSString *)titleForFeed;
 -(RSSEntry *)topicAtIndex:(NSUInteger )index;
+- (void)callFeedService;
 
 @end

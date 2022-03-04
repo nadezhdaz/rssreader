@@ -24,10 +24,17 @@
     @autoreleasepool {
         self.completion = parameters[@"completion"];
         NSURL *url = [NSURL URLWithString:parameters[@"url"]];
-        NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:url] autorelease]; //[[[NSXMLParser alloc] initWithData:data] autorelease];
+        NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:url] autorelease];
         parser.delegate = self;
         [parser parse];
     }
+}
+
+- (void)parseWithData: (NSData *)data completion: (void (^)(NSArray<RSSEntry *> *, NSError *)) completion {
+    self.completion = completion;
+    NSXMLParser *parser = [[[NSXMLParser alloc] initWithData:data] autorelease];
+    parser.delegate = self;
+    [parser parse];
 }
 
 #pragma mark - NSXMLParserDelegate
@@ -35,11 +42,6 @@
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     if (self.completion) {
         self.completion(nil, parseError);
-        /*if (self.topics) {
-            self.completion(self.topics, parseError);
-        } else {
-            self.completion(nil, parseError);
-        }*/
     }
     
     [self resetParserState];
@@ -116,7 +118,6 @@ didStartElement:(NSString *)elementName
     _parsingString = nil;
     [_tagPath release];
     _tagPath = nil;
-    
     [super dealloc];
 }
 

@@ -23,13 +23,13 @@
     [self setupNavigationItems];
     [self setupTableView];
     [self setupActivityIndicator];
-    [self didStartLoading];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.viewModel = [RSSListViewModel new];
     self.viewModel.viewDelegate = self;
+    [self.viewModel callFeedService];
 }
 
 - (void)setupNavigationItems {
@@ -113,7 +113,7 @@
     }
 }
 
-- (void)didFailWithError:(NSError *)error {
+- (void)didFailWithErrorMessage:(NSString *)message {
     if (@available(iOS 13.0, *)) {
         if (self.activityIndicator.isAnimating) {
             [self.activityIndicator stopAnimating];
@@ -123,7 +123,7 @@
         app.networkActivityIndicatorVisible = false;
     }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                             message:[NSString stringWithFormat:@"%@", error.localizedDescription]
+                                                                             message:[NSString stringWithFormat:@"%@", message]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];

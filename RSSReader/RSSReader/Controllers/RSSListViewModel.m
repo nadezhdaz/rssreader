@@ -28,7 +28,6 @@
         _topicsList = [NSMutableArray new];
         _service = [[RSSFeedService alloc] initWithUrl:@"https://www.jpl.nasa.gov/feeds/news"];
     }
-    [self callFeedService];
     return self;
 }
 
@@ -57,24 +56,42 @@
     [super dealloc];
 }
 
-#pragma mark - Private Methods
+
 
 - (void)callFeedService {
+    __weak typeof(self) weakSelf = self;
+    [self.viewDelegate didStartLoading];
     [self.service retrieveFeed:^(NSArray<RSSEntry *> *entries, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (entries) {
-                self.topicsList = [entries copy];
-                self.networkError = nil;
-                if ([self.viewDelegate respondsToSelector:@selector(didFinishLoading)]) {
-                    [self.viewDelegate performSelectorOnMainThread:@selector(didFinishLoading) withObject:nil waitUntilDone:false];
-                }
+                weakSelf.topicsList = [entries copy];
+                weakSelf.networkError = nil;
+                [weakSelf.viewDelegate didFinishLoading];
             } else {
-                self.topicsList = nil;
-                self.networkError = error;
-                if ([self.viewDelegate respondsToSelector:@selector(didFailWithError:)]) {
-                    [self.viewDelegate performSelectorOnMainThread:@selector(didFailWithError:) withObject:error waitUntilDone:[NSThread isMainThread]];
-                }
+                weakSelf.topicsList = nil;
+                weakSelf.networkError = error;
+                NSString *message = [weakSelf errorMessage:error];
+                [weakSelf.viewDelegate didFailWithErrorMessage:message];
             }
-        }];
+        });
+    }];
+}
+
+#pragma mark - Private Methods
+
+- (NSString *)errorMessage: (NSError *)error {
+    switch (error.code) {
+        case 512:
+        case 1 ... 94:
+            return @"Impossible to show data";
+            break;
+        case 256:
+            return @"Impossible to receive data from Internet";
+            break;
+        default:
+            return @"Unknown error";
+            break;
+    }
 }
 
 @end

@@ -12,10 +12,10 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
-        _title = dictionary[@"title"];
-        _link = dictionary[@"link"];
-        _entryDescription = dictionary[@"description"];
-        _pubDate = dictionary[@"pubDate"];
+        _title = [dictionary[@"title"] copy];
+        _link = [dictionary[@"link"] copy];
+        _entryDescription = [dictionary[@"description"] copy];
+        _pubDate = [dictionary[@"pubDate"] copy];
     }
     return self;
 }
