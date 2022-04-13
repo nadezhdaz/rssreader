@@ -14,9 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSSFeedService : NSObject
 
+typedef void (^RSSFeedCompletionBlock)(NSString * _Nullable title,  NSArray<RSSEntry *> * _Nullable , NSError *);
+
 - (instancetype)initWithUrl:(NSString *) url;
 
-- (void)retrieveFeed:(void(^)(NSArray<RSSEntry *> *, NSError *))completion;
+- (void)retrieveFeed:(RSSFeedCompletionBlock) completion;
 
 @end
 

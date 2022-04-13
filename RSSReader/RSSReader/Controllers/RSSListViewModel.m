@@ -6,13 +6,16 @@
 //
 
 #import "RSSListViewModel.h"
+#import "DetailsViewModel.h"
+#import "WebViewViewModel.h"
 
 @interface RSSListViewModel ()
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, retain) NSMutableArray *topicsList;
+@property (nonatomic, retain) NSMutableArray <RSSEntry *> *topicsList;
 @property (nonatomic, copy) NSError *networkError;
-@property (nonatomic, retain) RSSFeedService * service;
+@property (nonatomic, retain) RSSFeedService *service;
+@property (nonatomic, copy) DetailsViewModel *detailsViewModel;
 
 @end
 
@@ -35,12 +38,23 @@
     return [self.topicsList count] > 0 ? [self.topicsList count]: 0;
 }
 
--(NSString *)titleForFeed {    
-    return [self.title autorelease];
+-(NSString *)titleForFeed {
+    return self.title;
 }
 
--(RSSEntry *)topicAtIndex:(NSUInteger )index {
+-(RSSEntry *)topicForIndex:(NSUInteger )index {
     return self.topicsList[index];
+}
+
+-(DetailsViewModel *)detailsForIndex:(NSUInteger )index {
+    DetailsViewModel *details = [[DetailsViewModel alloc] initWithEntry:self.topicsList[index]];
+    return details;
+}
+
+-(WebViewViewModel *)webViewForIndex:(NSUInteger )index {
+    NSString *urlString = self.topicsList[index].link;
+    WebViewViewModel *webViewModel = [[WebViewViewModel alloc] initWithUrl:urlString];
+    return webViewModel;
 }
 
 - (void)dealloc {
@@ -58,13 +72,14 @@
 
 
 
-- (void)callFeedService {
+- (void)updateData {
     __weak typeof(self) weakSelf = self;
     [self.viewDelegate didStartLoading];
-    [self.service retrieveFeed:^(NSArray<RSSEntry *> *entries, NSError *error) {
+    [self.service retrieveFeed:^(NSString *title, NSArray<RSSEntry *> *entries, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (entries) {
                 weakSelf.topicsList = [entries copy];
+                weakSelf.title = [title copy];
                 weakSelf.networkError = nil;
                 [weakSelf.viewDelegate didFinishLoading];
             } else {
@@ -83,10 +98,10 @@
     switch (error.code) {
         case 512:
         case 1 ... 94:
-            return @"Impossible to show data";
+            return @"Data reading error";
             break;
         case 256:
-            return @"Impossible to receive data from Internet";
+            return @"Internet connection error";
             break;
         default:
             return @"Unknown error";

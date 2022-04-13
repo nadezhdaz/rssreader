@@ -34,7 +34,7 @@
     return _session;
 }
 
-- (void)retrieveFeed:(void (^)(NSArray<RSSEntry *> *, NSError *)) completion {
+- (void)retrieveFeed:(RSSFeedCompletionBlock) completion {
     __weak typeof(self) weakSelf = self;
     NSError *error = nil;
     NSURL *url = [NSURL URLWithString:self.feedUrl];
@@ -42,7 +42,7 @@
     NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error];
     
     if (error) {
-        completion(nil, error);
+        completion(nil, nil, error);
         return;
     }
     

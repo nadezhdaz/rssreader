@@ -9,24 +9,29 @@
 #import "RSSEntry.h"
 #import "RSSFeedService.h"
 
-@class RSSListViewModel;
+@class DetailsViewModel;
+@class WebViewViewModel;
 
 @protocol RSSListViewModelDelegate <NSObject>
 
 - (void) didStartLoading;
 - (void) didFinishLoading;
-//- (void) didFailWithError: (NSError *)error;
 - (void) didFailWithErrorMessage:(NSString *)message;
 
 @end
 
 @interface RSSListViewModel : NSObject
 
+typedef void (^RSSFeedCompletionBlock)(NSString * title,  NSArray<RSSEntry *> *, NSError *);
+
 @property (nonatomic, weak) NSObject<RSSListViewModelDelegate>* viewDelegate;
 
--(NSInteger)numberOfRows;
--(NSString *)titleForFeed;
--(RSSEntry *)topicAtIndex:(NSUInteger )index;
-- (void)callFeedService;
+-(NSInteger) numberOfRows;
+-(NSString *) titleForFeed;
+-(RSSEntry *) topicForIndex:(NSUInteger )index;
+
+-(DetailsViewModel *)detailsForIndex:(NSUInteger )index;
+-(WebViewViewModel *)webViewForIndex:(NSUInteger )index;
+- (void) updateData;
 
 @end

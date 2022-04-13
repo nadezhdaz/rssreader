@@ -6,6 +6,10 @@
 //
 
 #import "RSSListViewController.h"
+#import "DetailsViewController.h"
+#import "WebViewViewController.h"
+
+//@class DetailsViewController;
 
 @interface RSSListViewController ()
 
@@ -23,19 +27,17 @@
     [self setupNavigationItems];
     [self setupTableView];
     [self setupActivityIndicator];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    
     self.viewModel = [RSSListViewModel new];
     self.viewModel.viewDelegate = self;
-    [self.viewModel callFeedService];
+    [self.viewModel updateData];
 }
 
 - (void)setupNavigationItems {
-    self.navigationController.navigationBar.tintColor = UIColor.redColor;
-    [self.navigationController.navigationBar setBackgroundColor: UIColor.whiteColor];
-    self.navigationItem.title = [self.viewModel titleForFeed];
+    self.navigationItem.title = [NSString stringWithFormat:@"Feed"];
+    [self.navigationController.navigationBar setBarTintColor:UIColor.whiteColor];
+    [self.navigationController.navigationBar setTintColor:UIColor.orangeColor];
+    self.navigationController.navigationBar.standardAppearance.titleTextAttributes = @{NSForegroundColorAttributeName : UIColor.orangeColor};
 }
 
 - (void) setupTableView {
@@ -71,9 +73,14 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
     }
     
-    RSSEntry *entryData = [[self.viewModel topicAtIndex:indexPath.row] retain];
+    RSSEntry *entry = [self.viewModel topicForIndex:indexPath.row];
+    RSSEntry *entryData = [entry retain];
+    cell.textLabel.numberOfLines = 0;
     cell.textLabel.text = entryData.title;
+    cell.textLabel.textColor = UIColor.darkGrayColor;
     [entryData release];
+    
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     return cell;
 }
@@ -83,11 +90,15 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *url = [self.viewModel topicAtIndex:indexPath.row].link;
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
-    //[url release];
+    WebViewViewController *webViewController = [[WebViewViewController alloc] initWithViewModel:[self.viewModel webViewForIndex:indexPath.row]];
+    [self.navigationController pushViewController:webViewController animated:true];
     
     [self.listTableView deselectRowAtIndexPath:indexPath animated:true];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    DetailsViewController *detailsController = [[DetailsViewController alloc] initWithViewModel:[self.viewModel detailsForIndex:indexPath.row]];
+    [self.navigationController pushViewController:detailsController animated:true];
 }
 
 - (void)dealloc {
@@ -139,6 +150,7 @@
         UIApplication* app = [UIApplication sharedApplication];
         app.networkActivityIndicatorVisible = false;
     }
+    //self.navigationItem.title = [self.viewModel titleForFeed];
     [self.listTableView reloadData];
     [self.listTableView layoutIfNeeded];
 }

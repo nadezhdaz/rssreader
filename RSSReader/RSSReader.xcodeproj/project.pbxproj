@@ -16,7 +16,10 @@
 		410FCCD427A2F3E600668248 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 410FCCD227A2F3E600668248 /* LaunchScreen.storyboard */; };
 		410FCCD727A2F3E600668248 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 410FCCD627A2F3E600668248 /* main.m */; };
 		410FCCE127A2F3E700668248 /* RSSReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 410FCCE027A2F3E700668248 /* RSSReaderTests.m */; };
-		410FCCEC27A2F3E700668248 /* RSSReaderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 410FCCEB27A2F3E700668248 /* RSSReaderUITests.m */; };
+		4112A70E2804B2F600EF5763 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4112A70D2804B2F600EF5763 /* DetailsViewController.m */; };
+		4112A7142804B33900EF5763 /* DetailsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4112A7132804B33900EF5763 /* DetailsViewModel.m */; };
+		4112A71B2804B75800EF5763 /* WebViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4112A71A2804B75800EF5763 /* WebViewViewModel.m */; };
+		4112A7212804B77200EF5763 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4112A7202804B77200EF5763 /* WebViewViewController.m */; };
 		41B2A2AB27A988A5006A4CF6 /* RSSFeedService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B2A2AA27A988A5006A4CF6 /* RSSFeedService.m */; };
 		41B2A2B127A988E8006A4CF6 /* RSSFeedXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B2A2B027A988E8006A4CF6 /* RSSFeedXMLParser.m */; };
 		41B2A2B727A98A22006A4CF6 /* RSSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B2A2B627A98A22006A4CF6 /* RSSChannel.m */; };
@@ -25,13 +28,6 @@
 
 /* Begin PBXContainerItemProxy section */
 		410FCCDD27A2F3E700668248 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 410FCCB927A2F3E400668248 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 410FCCC027A2F3E400668248;
-			remoteInfo = RSSReader;
-		};
-		410FCCE827A2F3E700668248 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 410FCCB927A2F3E400668248 /* Project object */;
 			proxyType = 1;
@@ -59,9 +55,14 @@
 		410FCCDC27A2F3E700668248 /* RSSReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RSSReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		410FCCE027A2F3E700668248 /* RSSReaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSReaderTests.m; sourceTree = "<group>"; };
 		410FCCE227A2F3E700668248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		410FCCE727A2F3E700668248 /* RSSReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RSSReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		410FCCEB27A2F3E700668248 /* RSSReaderUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSReaderUITests.m; sourceTree = "<group>"; };
-		410FCCED27A2F3E700668248 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4112A70C2804B2F600EF5763 /* DetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
+		4112A70D2804B2F600EF5763 /* DetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
+		4112A7122804B33900EF5763 /* DetailsViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailsViewModel.h; sourceTree = "<group>"; };
+		4112A7132804B33900EF5763 /* DetailsViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailsViewModel.m; sourceTree = "<group>"; };
+		4112A7192804B75800EF5763 /* WebViewViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewViewModel.h; sourceTree = "<group>"; };
+		4112A71A2804B75800EF5763 /* WebViewViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewViewModel.m; sourceTree = "<group>"; };
+		4112A71F2804B77200EF5763 /* WebViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
+		4112A7202804B77200EF5763 /* WebViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		41B2A2A927A988A5006A4CF6 /* RSSFeedService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSSFeedService.h; sourceTree = "<group>"; };
 		41B2A2AA27A988A5006A4CF6 /* RSSFeedService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSSFeedService.m; sourceTree = "<group>"; };
 		41B2A2AF27A988E8006A4CF6 /* RSSFeedXMLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSSFeedXMLParser.h; sourceTree = "<group>"; };
@@ -87,19 +88,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		410FCCE427A2F3E700668248 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		410EA23527A8179C00A820C3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4112A7182804B72B00EF5763 /* WebView */,
+				4112A70B2804B2D000EF5763 /* Details */,
 				410EA23627A8180D00A820C3 /* RSSListViewController.h */,
 				410EA23727A8180D00A820C3 /* RSSListViewController.m */,
 				410EA24927A82C4300A820C3 /* RSSListViewModel.h */,
@@ -132,7 +128,6 @@
 			children = (
 				410FCCC327A2F3E400668248 /* RSSReader */,
 				410FCCDF27A2F3E700668248 /* RSSReaderTests */,
-				410FCCEA27A2F3E700668248 /* RSSReaderUITests */,
 				410FCCC227A2F3E400668248 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -142,7 +137,6 @@
 			children = (
 				410FCCC127A2F3E400668248 /* RSSReader.app */,
 				410FCCDC27A2F3E700668248 /* RSSReaderTests.xctest */,
-				410FCCE727A2F3E700668248 /* RSSReaderUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,13 +169,26 @@
 			path = RSSReaderTests;
 			sourceTree = "<group>";
 		};
-		410FCCEA27A2F3E700668248 /* RSSReaderUITests */ = {
+		4112A70B2804B2D000EF5763 /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				410FCCEB27A2F3E700668248 /* RSSReaderUITests.m */,
-				410FCCED27A2F3E700668248 /* Info.plist */,
+				4112A70C2804B2F600EF5763 /* DetailsViewController.h */,
+				4112A70D2804B2F600EF5763 /* DetailsViewController.m */,
+				4112A7122804B33900EF5763 /* DetailsViewModel.h */,
+				4112A7132804B33900EF5763 /* DetailsViewModel.m */,
 			);
-			path = RSSReaderUITests;
+			path = Details;
+			sourceTree = "<group>";
+		};
+		4112A7182804B72B00EF5763 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				4112A7192804B75800EF5763 /* WebViewViewModel.h */,
+				4112A71A2804B75800EF5763 /* WebViewViewModel.m */,
+				4112A71F2804B77200EF5763 /* WebViewViewController.h */,
+				4112A7202804B77200EF5763 /* WebViewViewController.m */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		41B2A2A627A98827006A4CF6 /* Services */ = {
@@ -258,24 +265,6 @@
 			productReference = 410FCCDC27A2F3E700668248 /* RSSReaderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		410FCCE627A2F3E700668248 /* RSSReaderUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 410FCCF627A2F3E700668248 /* Build configuration list for PBXNativeTarget "RSSReaderUITests" */;
-			buildPhases = (
-				410FCCE327A2F3E700668248 /* Sources */,
-				410FCCE427A2F3E700668248 /* Frameworks */,
-				410FCCE527A2F3E700668248 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				410FCCE927A2F3E700668248 /* PBXTargetDependency */,
-			);
-			name = RSSReaderUITests;
-			productName = RSSReaderUITests;
-			productReference = 410FCCE727A2F3E700668248 /* RSSReaderUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -288,10 +277,6 @@
 						CreatedOnToolsVersion = 12.4;
 					};
 					410FCCDB27A2F3E700668248 = {
-						CreatedOnToolsVersion = 12.4;
-						TestTargetID = 410FCCC027A2F3E400668248;
-					};
-					410FCCE627A2F3E700668248 = {
 						CreatedOnToolsVersion = 12.4;
 						TestTargetID = 410FCCC027A2F3E400668248;
 					};
@@ -312,7 +297,6 @@
 			targets = (
 				410FCCC027A2F3E400668248 /* RSSReader */,
 				410FCCDB27A2F3E700668248 /* RSSReaderTests */,
-				410FCCE627A2F3E700668248 /* RSSReaderUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -334,13 +318,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		410FCCE527A2F3E700668248 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -350,12 +327,16 @@
 			files = (
 				41B2A2C527AAC7D2006A4CF6 /* NSMutableString+PathComponents.m in Sources */,
 				410FCCC627A2F3E400668248 /* AppDelegate.m in Sources */,
+				4112A70E2804B2F600EF5763 /* DetailsViewController.m in Sources */,
 				41B2A2AB27A988A5006A4CF6 /* RSSFeedService.m in Sources */,
 				410FCCD727A2F3E600668248 /* main.m in Sources */,
+				4112A71B2804B75800EF5763 /* WebViewViewModel.m in Sources */,
 				41B2A2B727A98A22006A4CF6 /* RSSChannel.m in Sources */,
 				410EA24227A82BF200A820C3 /* RSSListViewModel.m in Sources */,
 				410EA24D27A8A74B00A820C3 /* RSSEntry.m in Sources */,
+				4112A7142804B33900EF5763 /* DetailsViewModel.m in Sources */,
 				410FCCC927A2F3E400668248 /* SceneDelegate.m in Sources */,
+				4112A7212804B77200EF5763 /* WebViewViewController.m in Sources */,
 				410EA23827A8180D00A820C3 /* RSSListViewController.m in Sources */,
 				41B2A2B127A988E8006A4CF6 /* RSSFeedXMLParser.m in Sources */,
 			);
@@ -369,14 +350,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		410FCCE327A2F3E700668248 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				410FCCEC27A2F3E700668248 /* RSSReaderUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -384,11 +357,6 @@
 			isa = PBXTargetDependency;
 			target = 410FCCC027A2F3E400668248 /* RSSReader */;
 			targetProxy = 410FCCDD27A2F3E700668248 /* PBXContainerItemProxy */;
-		};
-		410FCCE927A2F3E700668248 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 410FCCC027A2F3E400668248 /* RSSReader */;
-			targetProxy = 410FCCE827A2F3E700668248 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -596,42 +564,6 @@
 			};
 			name = Release;
 		};
-		410FCCF727A2F3E700668248 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HPK5P2C2Q2;
-				INFOPLIST_FILE = RSSReaderUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nadezhda.RSSReaderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RSSReader;
-			};
-			name = Debug;
-		};
-		410FCCF827A2F3E700668248 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HPK5P2C2Q2;
-				INFOPLIST_FILE = RSSReaderUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nadezhda.RSSReaderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RSSReader;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -658,15 +590,6 @@
 			buildConfigurations = (
 				410FCCF427A2F3E700668248 /* Debug */,
 				410FCCF527A2F3E700668248 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		410FCCF627A2F3E700668248 /* Build configuration list for PBXNativeTarget "RSSReaderUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				410FCCF727A2F3E700668248 /* Debug */,
-				410FCCF827A2F3E700668248 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
