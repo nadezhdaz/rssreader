@@ -13,6 +13,7 @@
 @property(nonatomic, retain) WKWebView *webView;
 
 @property (nonatomic, retain) UIBarButtonItem *flexibleSpace;
+@property (nonatomic, retain) UIBarButtonItem *fixedSpace;
 @property (nonatomic, retain) UIBarButtonItem *backButton;
 @property (nonatomic, retain) UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) UIBarButtonItem *refreshButton;
@@ -31,6 +32,20 @@
     return self;
 }
 
+- (void) dealloc {
+    [_viewModel release];
+    [_webView release];
+    [_flexibleSpace release];
+    [_fixedSpace release];
+    [_backButton release];
+    [_forwardButton release];
+    [_refreshButton release];
+    [_stopButton release];
+    [_launchInSafariButton release];
+    
+    [super dealloc];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -44,8 +59,7 @@
 }
 
 - (void)setupWebView {
-    WKWebViewConfiguration *configuration = [WKWebViewConfiguration new];
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+    self.webView = [[[WKWebView alloc] initWithFrame:CGRectZero] autorelease];
     NSURLRequest *request = [NSURLRequest requestWithURL:[self.viewModel url]];
     [self.webView loadRequest:request];
     
@@ -54,35 +68,38 @@
 }
 
 - (void)setupToolBarButtons {
-    self.flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+    self.flexibleSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                    target:nil
-                                                                                   action:nil];
+                                                                                   action:nil] autorelease];
     
-    self.backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"chevron.backward"]
+    self.fixedSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                        target:nil
+                                                                        action:nil] autorelease];
+    [self.fixedSpace setWidth:20.0];
+    
+    self.backButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"chevron.backward"]
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
-                                                      action:@selector(goBackAction)];
+                                                      action:@selector(goBackAction)] autorelease];
     
     
-    self.forwardButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"chevron.forward"]
+    self.forwardButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"chevron.forward"]
                                                           style:UIBarButtonItemStylePlain
                                                          target:self
-                                                         action:@selector(goForwardAction)];
+                                                         action:@selector(goForwardAction)] autorelease];
     
-    self.refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"arrow.clockwise"]
-                                                       style:UIBarButtonItemStylePlain
+    self.refreshButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                       target:self
-                                                      action:@selector(refreshAction)];
+                                                      action:@selector(refreshAction)] autorelease];
     
-    self.stopButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"xmark"]
-                                                       style:UIBarButtonItemStylePlain
+    self.stopButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
                                                       target:self
-                                                      action:@selector(stopLoadingAction)];
+                                                      action:@selector(stopLoadingAction)] autorelease];
     
-    self.launchInSafariButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"safari"]
+    self.launchInSafariButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"safari"]
                                                           style:UIBarButtonItemStylePlain
                                                          target:self
-                                                         action:@selector(launchSafariAction)];
+                                                         action:@selector(launchSafariAction)] autorelease];
     
     [self.stopButton setEnabled:false];
 }
@@ -91,21 +108,19 @@
     [self setupToolBarButtons];
     //UIRefreshControl
     
-    CGFloat screenWidth = self.view.bounds.size.width;
-    CGFloat toolBarHeight = self.view.bounds.size.height * 0.2;
+    self.navigationController.toolbarHidden = false;
     
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, toolBarHeight)];
-    [toolBar setTranslucent:false];
-    toolBar.translatesAutoresizingMaskIntoConstraints = false;
-    
-    [toolBar setItems:@[self.flexibleSpace, self.backButton, self.forwardButton, self.flexibleSpace, self.flexibleSpace, self.refreshButton, self.flexibleSpace, self.stopButton, self.flexibleSpace, self.launchInSafariButton, self.flexibleSpace]];
-    [self.webView addSubview:toolBar];
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [toolBar.leadingAnchor constraintEqualToAnchor: self.webView.leadingAnchor constant:0.0],
-        [toolBar.trailingAnchor constraintEqualToAnchor: self.webView.trailingAnchor constant:0.0],
-        [toolBar.bottomAnchor constraintEqualToAnchor: self.webView.bottomAnchor constant:-16.0],
-    ]];
+    [self setToolbarItems:@[self.fixedSpace,
+                            self.backButton,
+                            self.flexibleSpace,
+                            self.forwardButton,
+                            self.flexibleSpace,
+                            self.refreshButton,
+                            self.flexibleSpace,
+                            self.stopButton,
+                            self.flexibleSpace,
+                            self.launchInSafariButton,
+                            self.fixedSpace]];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
@@ -144,6 +159,12 @@
     [[UIApplication sharedApplication] openURL:[self.viewModel url]
                                        options:@{}
                              completionHandler:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    self.navigationController.toolbarHidden = true;
 }
 
 @end

@@ -28,6 +28,16 @@
     return self;
 }
 
+- (void)dealloc {
+    [_stackView release];
+    [_titleLabel release];
+    [_descriptionLabel release];
+    [_dateLabel release];
+    [_viewModel release];
+    
+    [super dealloc];
+}
+
 - (UIStackView *)stackView {
     if (!_stackView) {
         _stackView = [UIStackView new];
@@ -102,10 +112,6 @@
         [self.descriptionLabel.leadingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.leadingAnchor constant:16.0],
         [self.descriptionLabel.trailingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.trailingAnchor constant:-16.0]
     ]];
-}
-
-- (void)setupNavigationItems {
-    
 }
 
 

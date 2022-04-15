@@ -24,6 +24,12 @@
     return self;
 }
 
+- (void)dealloc {
+    [_entry release];
+    
+    [super dealloc];
+}
+
 -(NSString *)title {
     return self.entry.title;
 }

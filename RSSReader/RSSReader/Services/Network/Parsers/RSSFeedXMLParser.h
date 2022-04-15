@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSSFeedXMLParser : NSObject
 
-typedef void (^RSSFeedCompletionBlock)(NSString * _Nullable title,  NSArray<RSSEntry *> * _Nullable , NSError *);
+typedef void (^RSSFeedCompletionBlock)(NSString * _Nullable title,  NSArray<RSSEntry *> * _Nullable , NSError * _Nullable);
 
 - (void)parseWithParameters: (NSDictionary *)dictionary;
 - (void)parseWithData: (NSData *)data completion: (RSSFeedCompletionBlock) completion;

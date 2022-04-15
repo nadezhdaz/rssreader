@@ -22,13 +22,9 @@
 
 - (void)dealloc {
     [_title release];
-    _title = nil;
     [_link release];
-    _link = nil;
     [_entryDescription release];
-    _entryDescription = nil;
     [_pubDate release];
-    _pubDate = nil;
     
     [super dealloc];
 }

@@ -90,14 +90,14 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    WebViewViewController *webViewController = [[WebViewViewController alloc] initWithViewModel:[self.viewModel webViewForIndex:indexPath.row]];
+    WebViewViewController *webViewController = [[[WebViewViewController alloc] initWithViewModel:[self.viewModel webViewForIndex:indexPath.row]] autorelease];
     [self.navigationController pushViewController:webViewController animated:true];
     
     [self.listTableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    DetailsViewController *detailsController = [[DetailsViewController alloc] initWithViewModel:[self.viewModel detailsForIndex:indexPath.row]];
+    DetailsViewController *detailsController = [[[DetailsViewController alloc] initWithViewModel:[self.viewModel detailsForIndex:indexPath.row]] autorelease];
     [self.navigationController pushViewController:detailsController animated:true];
 }
 

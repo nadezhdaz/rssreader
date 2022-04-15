@@ -57,20 +57,6 @@
     return webViewModel;
 }
 
-- (void)dealloc {
-    [_title release];
-    _title = nil;
-    [_topicsList release];
-    _topicsList = nil;
-    [_networkError release];
-    _networkError = nil;
-    [_service release];
-    _service = nil;
-    
-    [super dealloc];
-}
-
-
 
 - (void)updateData {
     __weak typeof(self) weakSelf = self;
@@ -107,6 +93,15 @@
             return @"Unknown error";
             break;
     }
+}
+
+- (void)dealloc {
+    [_title release];
+    [_topicsList release];
+    [_networkError release];
+    [_service release];
+    
+    [super dealloc];
 }
 
 @end

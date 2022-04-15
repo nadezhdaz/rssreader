@@ -123,15 +123,10 @@ didStartElement:(NSString *)elementName
 
 - (void)dealloc {
     [_completion release];
-    _completion = nil;
     [_topics release];
-    _topics = nil;
     [_topicDictionary release];
-    _topicDictionary = nil;
     [_parsingString release];
-    _parsingString = nil;
     [_tagPath release];
-    _tagPath = nil;
     [super dealloc];
 }
 

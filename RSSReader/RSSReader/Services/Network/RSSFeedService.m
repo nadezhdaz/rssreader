@@ -54,41 +54,10 @@
     }
 }
 
-/*
-- (void)retrieveFeed:(void (^)(NSArray<RSSEntry *> *, NSError *)) completion {
-    NSURL *url = [NSURL URLWithString:self.feedUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    request.HTTPMethod = @"GET";
-    
-    NSURLSessionDataTask *dataTask = [self.session
-                                      dataTaskWithRequest: request
-                                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            completion(nil, error);
-            return;
-        }
-        
-        //Attempt to fix NSXMLParserErrorMessage=Extra content at the end of the document
-        //NSString *dataString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-        //NSData *reEncodedData = [dataString dataUsingEncoding:NSUTF8StringEncoding];
-        
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjects:
-                                    [NSArray arrayWithObjects:self.feedUrl,[completion copy],nil] forKeys:[NSArray arrayWithObjects:@"url",@"completion", nil]];
-        [NSThread detachNewThreadSelector:@selector(parseWithParameters:) toTarget:self.parser withObject:parameters];
-        //[self.parser parsefromUrl:url completion:completion];
-        
-    }];
-    
-    [dataTask resume];
-}*/
-
 - (void)dealloc {
     [_session release];
-    _session = nil;
     [_parser release];
-    _parser = nil;
     [_feedUrl release];
-    _feedUrl = nil;
     
     [super dealloc];
 }

@@ -21,11 +21,8 @@
 
 - (void)dealloc {
     [_title release];
-    //_title = nil;
     [_link release];
-    _link = nil;
     [_channelDescription release];
-    _channelDescription = nil;
     
     [super dealloc];
 }

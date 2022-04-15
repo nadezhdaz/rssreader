@@ -27,4 +27,10 @@
     return [NSURL URLWithString:self.urlString];
 }
 
+- (void)dealloc {
+    [_urlString release];
+    
+    [super dealloc];
+}
+
 @end
