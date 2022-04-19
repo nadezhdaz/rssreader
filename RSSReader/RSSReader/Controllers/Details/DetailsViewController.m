@@ -89,7 +89,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self setupNavigationItems];
     self.viewModel.viewDelegate = self;
     [self.viewModel callData];
 }

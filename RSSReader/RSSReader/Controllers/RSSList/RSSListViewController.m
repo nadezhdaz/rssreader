@@ -13,7 +13,7 @@
 
 @interface RSSListViewController ()
 
-@property (nonatomic, retain) UITableView *listTableView;
+@property (nonatomic, weak) UITableView *listTableView;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) RSSListViewModel *viewModel;
 
@@ -21,16 +21,19 @@
 
 @implementation RSSListViewController
 
+- (void)setViewModel:(RSSListViewModel *)viewModel {
+    _viewModel = viewModel;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.viewModel.viewDelegate = self;
+    [self.viewModel updateData];
+    
     [self.view setBackgroundColor: UIColor.whiteColor];
     [self setupNavigationItems];
     [self setupTableView];
     [self setupActivityIndicator];
-    
-    self.viewModel = [RSSListViewModel new];
-    self.viewModel.viewDelegate = self;
-    [self.viewModel updateData];
 }
 
 - (void)setupNavigationItems {
@@ -41,12 +44,14 @@
 }
 
 - (void) setupTableView {
-    self.listTableView = [[UITableView alloc] initWithFrame:CGRectZero];
-    [self.listTableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"TopicsListCellId"];
-    self.listTableView.dataSource = self;
-    self.listTableView.delegate = self;
     
-    self.listTableView.translatesAutoresizingMaskIntoConstraints = NO;
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+    [tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"TopicsListCellId"];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.listTableView = tableView;
+    
     [self.view addSubview:self.listTableView];
     
     [NSLayoutConstraint activateConstraints:@[
@@ -152,7 +157,6 @@
     }
     //self.navigationItem.title = [self.viewModel titleForFeed];
     [self.listTableView reloadData];
-    [self.listTableView layoutIfNeeded];
 }
 
 @end

@@ -17,13 +17,18 @@
 
 @implementation RSSFeedService
 
-- (instancetype)initWithUrl:(NSString *) url {
+- (instancetype)initWithUrl:(NSString *) url parser:(RSSFeedXMLParser *)parser {
     self = [super init];
     if (self) {
-        _parser = [RSSFeedXMLParser new];
+        _parser = parser;
         _feedUrl = url;
     }
     return self;
+}
+
++ (instancetype)defaultInit:(NSString *)url {
+    RSSFeedXMLParser *parser = [RSSFeedXMLParser new];
+    return [[RSSFeedService alloc] initWithUrl:url parser:parser];
 }
 
 - (NSURLSession *)session {
@@ -35,20 +40,28 @@
 }
 
 - (void)retrieveFeed:(RSSFeedCompletionBlock) completion {
-    __weak typeof(self) weakSelf = self;
-    NSError *error = nil;
     NSURL *url = [NSURL URLWithString:self.feedUrl];
     
-    NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error];
-    
-    if (error) {
-        completion(nil, nil, error);
-        return;
-    }
+    [self loadFeedFromUrl:url completion:completion];
+}
+
+- (void)loadFeedFromUrl:(NSURL *)url completion:(RSSFeedCompletionBlock) completion {
+    __weak typeof(self) weakSelf = self;
     
     if ([self.parser respondsToSelector:@selector(parseWithData:completion:)]) {
         NSThread *thread = [[[NSThread alloc] initWithBlock:^{
-            [weakSelf.parser parseWithData:data completion:completion];
+            NSError *error = nil;
+            NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error];
+            
+            if (data) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.parser parseWithData:data completion:completion];
+                });
+            } else if (error) {
+                completion(nil, nil, error);
+                return;
+            }
+            
         }] autorelease];
         [thread start];
     }

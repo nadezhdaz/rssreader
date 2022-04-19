@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSSListViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, RSSListViewModelDelegate>
 
+- (void)setViewModel:(RSSListViewModel *)viewModel;
 
 @end
 

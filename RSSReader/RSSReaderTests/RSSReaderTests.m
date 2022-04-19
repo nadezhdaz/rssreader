@@ -9,8 +9,6 @@
 
 @interface RSSReaderTests : XCTestCase
 
-@property (atomic, copy) NSString * anotherString;
-
 @end
 
 @implementation RSSReaderTests

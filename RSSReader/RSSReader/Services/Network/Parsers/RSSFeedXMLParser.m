@@ -7,6 +7,7 @@
 
 #import "RSSFeedXMLParser.h"
 #import "NSMutableString+PathComponents.h"
+#import "NSError+RSSReaderErrors.h"
 
 @interface RSSFeedXMLParser () <NSXMLParserDelegate>
 
@@ -21,21 +22,15 @@
 
 @implementation RSSFeedXMLParser
 
-- (void)parseWithParameters: (NSDictionary *)parameters {
-    @autoreleasepool {
-        self.completion = parameters[@"completion"];
-        NSURL *url = [NSURL URLWithString:parameters[@"url"]];
-        NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:url] autorelease];
-        parser.delegate = self;
-        [parser parse];
-    }
-}
-
 - (void)parseWithData: (NSData *)data completion: (RSSFeedCompletionBlock) completion {
     self.completion = completion;
-    NSXMLParser *parser = [[[NSXMLParser alloc] initWithData:data] autorelease];
-    parser.delegate = self;
-    [parser parse];
+    if (!data) {
+        self.completion(nil, nil, [NSError noDataError]);
+    } else {
+        NSXMLParser *parser = [[[NSXMLParser alloc] initWithData:data] autorelease];
+        parser.delegate = self;
+        [parser parse];
+    }    
 }
 
 #pragma mark - NSXMLParserDelegate
@@ -91,7 +86,6 @@ didStartElement:(NSString *)elementName
  qualifiedName:(NSString *)qName {
     if ([self.tagPath isEqualToString:@"/rss/channel/title"]) {
         self.rssTitle = [self.parsingString copy];
-        [self.parsingString release];
         self.parsingString = nil;
     }
     
@@ -101,7 +95,6 @@ didStartElement:(NSString *)elementName
             [self.tagPath isEqualToString:@"/rss/channel/item/description"] ||
             [self.tagPath isEqualToString:@"/rss/channel/item/pubDate"]) {
             [self.topicDictionary setObject:[self.parsingString copy] forKey:elementName];
-            [self.parsingString release];
             self.parsingString = nil;
         }
     }
@@ -133,11 +126,11 @@ didStartElement:(NSString *)elementName
 #pragma mark - Private methods
 
 - (void)resetParserState {
-    [self.completion release];
-    [self.topics release];
-    [self.topicDictionary release];
-    [self.parsingString release];
-    [self.tagPath release];
+    self.completion = nil;
+    self.topics = nil;
+    self.topicDictionary = nil;
+    self.parsingString = nil;
+    self.tagPath = nil;
 }
 
 @end

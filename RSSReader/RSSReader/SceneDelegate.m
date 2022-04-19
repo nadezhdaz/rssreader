@@ -7,8 +7,9 @@
 
 #import "SceneDelegate.h"
 #import "RSSListViewController.h"
+#import "RSSListViewModel.h"
 
-//@class RSSListViewController;
+//@class RSSListViewModel;
 
 @interface SceneDelegate ()
 
@@ -21,9 +22,11 @@
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    RSSListViewController *rootViewController = [[RSSListViewController new] autorelease];
+    [rootViewController setViewModel:[RSSListViewModel new]];
     
     self.window = [[UIWindow alloc] initWithWindowScene:(UIWindowScene *)scene];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: [[RSSListViewController new] autorelease]];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: rootViewController];
     [navigationController autorelease];
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];

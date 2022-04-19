@@ -29,10 +29,23 @@
     self = [super init];
     if (self) {
         _topicsList = [NSMutableArray new];
-        _service = [[RSSFeedService alloc] initWithUrl:@"https://www.jpl.nasa.gov/feeds/news"];
+        _service = [RSSFeedService defaultInit: @"https://www.jpl.nasa.gov/feeds/news"];
     }
     return self;
 }
+
+- (instancetype)initWithUrl:(NSString *)urlString {
+    self = [super init];
+    if (self) {
+        _topicsList = [NSMutableArray new];
+        _service = [[RSSFeedService alloc] initWithUrl:urlString];
+    }
+    return self;
+}
+
+//- (void)setupServiceWithUrlString:(NSString *)urlString {
+//    self.service = [[RSSFeedService alloc] initWithUrl:urlString];
+//}
 
 -(NSInteger)numberOfRows {
     return [self.topicsList count] > 0 ? [self.topicsList count]: 0;
@@ -62,19 +75,17 @@
     __weak typeof(self) weakSelf = self;
     [self.viewDelegate didStartLoading];
     [self.service retrieveFeed:^(NSString *title, NSArray<RSSEntry *> *entries, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (entries) {
-                weakSelf.topicsList = [entries copy];
-                weakSelf.title = [title copy];
-                weakSelf.networkError = nil;
-                [weakSelf.viewDelegate didFinishLoading];
-            } else {
-                weakSelf.topicsList = nil;
-                weakSelf.networkError = error;
-                NSString *message = [weakSelf errorMessage:error];
-                [weakSelf.viewDelegate didFailWithErrorMessage:message];
-            }
-        });
+        if (entries) {
+            weakSelf.topicsList = [entries mutableCopy];
+            weakSelf.title = title;
+            weakSelf.networkError = nil;
+            [weakSelf.viewDelegate didFinishLoading];
+        } else {
+            weakSelf.topicsList = nil;
+            weakSelf.networkError = error;
+            NSString *message = [weakSelf errorMessage:error];
+            [weakSelf.viewDelegate didFailWithErrorMessage:message];
+        }
     }];
 }
 
@@ -89,6 +100,8 @@
         case 256:
             return @"Internet connection error";
             break;
+        case -34:
+            return @"No data received";
         default:
             return @"Unknown error";
             break;
