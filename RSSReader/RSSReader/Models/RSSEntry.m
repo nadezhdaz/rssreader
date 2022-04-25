@@ -6,6 +6,7 @@
 //
 
 #import "RSSEntry.h"
+#import "NSDate+DateFormatter.h"
 
 @implementation RSSEntry
 
@@ -15,7 +16,7 @@
         _title = [dictionary[@"title"] copy];
         _link = [dictionary[@"link"] copy];
         _entryDescription = [dictionary[@"description"] copy];
-        _pubDate = [dictionary[@"pubDate"] copy];
+        _pubDate = [NSDate getDateFromString:[dictionary[@"pubDate"] copy]];
     }
     return self;
 }

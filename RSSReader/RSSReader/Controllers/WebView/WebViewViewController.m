@@ -46,26 +46,41 @@
     [super dealloc];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self setupWebView];
-    
-    [self setupToolBar];
-    
-    self.webView.navigationDelegate = self;
-    
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[self.viewModel url]]];
+- (void)setViewModel:(WebViewViewModel *)viewModel {
+    _viewModel = viewModel;
 }
 
-- (void)setupWebView {
+-(void)loadView {
+    WKWebView *webView = [[[WKWebView alloc] initWithFrame:CGRectZero] autorelease];
+    webView.navigationDelegate = self;
+    webView.UIDelegate = self;
+    
+    self.view = webView;
+    self.webView = webView;
+    
+    //[self loadURL:[self.viewModel url]];
+    
+    [self setupToolBar];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self loadURL:[self.viewModel url]];
+}
+
+-(void)loadURL:(NSURL *)url {
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [self.webView loadRequest:request];
+}
+
+/*- (void)setupWebView {
     self.webView = [[[WKWebView alloc] initWithFrame:CGRectZero] autorelease];
     NSURLRequest *request = [NSURLRequest requestWithURL:[self.viewModel url]];
     [self.webView loadRequest:request];
     
     [self.view addSubview:self.webView];
     [self.webView setFrame:self.view.bounds];
-}
+}*/
 
 - (void)setupToolBarButtons {
     self.flexibleSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace

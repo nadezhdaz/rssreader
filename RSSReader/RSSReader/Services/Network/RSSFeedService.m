@@ -53,16 +53,21 @@
             NSError *error = nil;
             NSData *data = [NSData dataWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:&error];
             
-            if (data) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.parser parseWithData:data completion:completion];
-                });
-            } else if (error) {
+            if (error) {
                 completion(nil, nil, error);
                 return;
             }
             
+            if (data) {
+                dispatch_async(dispatch_get_main_queue(), ^{                    
+                    [weakSelf.parser parseWithData:data completion:completion];
+                });
+            }
+        
+            
         }] autorelease];
+        thread.qualityOfService = NSQualityOfServiceUtility;
+        
         [thread start];
     }
 }

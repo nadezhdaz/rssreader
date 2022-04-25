@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WebViewViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,8 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) NSObject<WebViewModelDelegate>* viewDelegate;
 
 -(NSURL *)url;
-
-- (instancetype)initWithUrl:(NSString *)urlString;
+- (void)setupUrl:(NSString *)urlString;
 
 @end
 

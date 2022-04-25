@@ -7,6 +7,7 @@
 
 #import "DetailsViewModel.h"
 #import "RSSEntry.h"
+#import "NSDate+DateFormatter.h"
 
 @interface DetailsViewModel ()
 
@@ -39,7 +40,7 @@
 }
 
 -(NSString *)date {
-    return self.entry.pubDate;
+    return [NSDate getStringFromDate:self.entry.pubDate];
 }
 
 - (void)callData {

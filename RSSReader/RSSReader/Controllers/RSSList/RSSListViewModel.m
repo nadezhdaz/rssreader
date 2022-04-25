@@ -66,7 +66,9 @@
 
 -(WebViewViewModel *)webViewForIndex:(NSUInteger )index {
     NSString *urlString = self.topicsList[index].link;
-    WebViewViewModel *webViewModel = [[WebViewViewModel alloc] initWithUrl:urlString];
+    //WebViewViewModel *webViewModel = [[WebViewViewModel alloc] initWithUrl:urlString];
+    WebViewViewModel *webViewModel = [WebViewViewModel new];
+    [webViewModel setupUrl:urlString];
     return webViewModel;
 }
 

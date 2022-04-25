@@ -27,6 +27,12 @@
     return [NSURL URLWithString:self.urlString];
 }
 
+- (void)setupUrl:(NSString *)urlString {
+    @synchronized (urlString) {
+        self.urlString = urlString;
+    }
+}
+
 - (void)dealloc {
     [_urlString release];
     

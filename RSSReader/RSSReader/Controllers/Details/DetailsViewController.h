@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DetailsViewController : UIViewController <DetailsViewModelDelegate>
 
-- (instancetype)initWithViewModel:(DetailsViewModel *)viewModel;
+- (void)setViewModel:(DetailsViewModel *)viewModel;
 
 @end
 

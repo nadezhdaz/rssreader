@@ -8,6 +8,8 @@
 #import "RSSListViewController.h"
 #import "DetailsViewController.h"
 #import "WebViewViewController.h"
+#import "UIAlertController+Utilities.h"
+#import "UIApplication+NetworkActivity.h"
 
 //@class DetailsViewController;
 
@@ -16,10 +18,26 @@
 @property (nonatomic, weak) UITableView *listTableView;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) RSSListViewModel *viewModel;
+@property (nonatomic, retain) DetailsViewController *detailsViewController;
+@property (nonatomic, retain) WebViewViewController *webViewViewController;
 
 @end
 
 @implementation RSSListViewController
+
+-(DetailsViewController *)detailsViewController {
+    if (!_detailsViewController) {
+        _detailsViewController = [DetailsViewController new];
+    }
+    return _detailsViewController;
+}
+
+-(WebViewViewController *)webViewViewController {
+    if (!_webViewViewController) {
+        _webViewViewController = [WebViewViewController new];
+    }
+    return _webViewViewController;
+}
 
 - (void)setViewModel:(RSSListViewModel *)viewModel {
     _viewModel = viewModel;
@@ -34,6 +52,7 @@
     [self setupNavigationItems];
     [self setupTableView];
     [self setupActivityIndicator];
+    [self.webViewViewController loadViewIfNeeded];
 }
 
 - (void)setupNavigationItems {
@@ -95,68 +114,62 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    WebViewViewController *webViewController = [[[WebViewViewController alloc] initWithViewModel:[self.viewModel webViewForIndex:indexPath.row]] autorelease];
-    [self.navigationController pushViewController:webViewController animated:true];
-    
+    [self.webViewViewController setViewModel:[self.viewModel webViewForIndex:indexPath.row]];
+    [self.navigationController pushViewController:self.webViewViewController animated:true];
     [self.listTableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    DetailsViewController *detailsController = [[[DetailsViewController alloc] initWithViewModel:[self.viewModel detailsForIndex:indexPath.row]] autorelease];
-    [self.navigationController pushViewController:detailsController animated:true];
+    [self.detailsViewController setViewModel:[self.viewModel detailsForIndex:indexPath.row]];
+    [self.navigationController pushViewController:self.detailsViewController animated:true];
 }
 
 - (void)dealloc {
     [_listTableView release];
     [_activityIndicator release];
     [_viewModel release];
+    [_detailsViewController release];
+    [_webViewViewController release];
     
     [super dealloc];
 }
 
-#pragma mark - Private Methods
-
-
-
 #pragma mark - RSSListViewModelDelegate Methods
 
 - (void)didStartLoading {
-    if (@available(iOS 13.0, *)) {
-        [self.activityIndicator startAnimating];        
-    } else {
-        UIApplication* app = [UIApplication sharedApplication];
-        app.networkActivityIndicatorVisible = true;
-    }
+    [self activityIndicatorStart];
 }
 
 - (void)didFailWithErrorMessage:(NSString *)message {
-    if (@available(iOS 13.0, *)) {
-        if (self.activityIndicator.isAnimating) {
-            [self.activityIndicator stopAnimating];
-        }
-    } else {
-        UIApplication* app = [UIApplication sharedApplication];
-        app.networkActivityIndicatorVisible = false;
-    }
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                             message:[NSString stringWithFormat:@"%@", message]
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self activityIndicatorStop];
+    [self presentViewController:[UIAlertController presentAlertWithErrorMessage:message] animated:YES completion:nil];
 }
 
 - (void)didFinishLoading {
+    [self activityIndicatorStop];
+    //self.navigationItem.title = [self.viewModel titleForFeed];
+    [self.listTableView reloadData];
+}
+
+#pragma mark - Private Methods
+
+- (void)activityIndicatorStart {
+    if (@available(iOS 13.0, *)) {
+        [self.activityIndicator startAnimating];
+    } else {
+        [UIApplication startNetworkActivityIndicator];
+    }
+}
+
+- (void)activityIndicatorStop {
     if (@available(iOS 13.0, *)) {
         if (self.activityIndicator.isAnimating) {
             [self.activityIndicator stopAnimating];
         }
     } else {
-        UIApplication* app = [UIApplication sharedApplication];
-        app.networkActivityIndicatorVisible = false;
+        [UIApplication stopNetworkActivityIndicator];
     }
-    //self.navigationItem.title = [self.viewModel titleForFeed];
-    [self.listTableView reloadData];
 }
+
 
 @end

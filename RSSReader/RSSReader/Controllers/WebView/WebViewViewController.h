@@ -11,9 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WebViewViewController : UIViewController <WKNavigationDelegate>
+@interface WebViewViewController : UIViewController <WKNavigationDelegate, WKUIDelegate>
 
-- (instancetype)initWithViewModel:(WebViewViewModel *)viewModel;
+- (void)setViewModel:(WebViewViewModel *)viewModel;
 
 @end
 

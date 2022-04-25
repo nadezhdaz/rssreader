@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *link;
 @property (nonatomic, copy) NSString *entryDescription;
-@property (nonatomic, copy) NSString *pubDate;
+@property (nonatomic, copy) NSDate *pubDate;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
