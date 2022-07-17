@@ -59,9 +59,10 @@
             }
             
             if (data) {
-                dispatch_async(dispatch_get_main_queue(), ^{                    
+                dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.parser parseWithData:data completion:completion];
                 });
+                
             }
         
             
@@ -70,6 +71,14 @@
         
         [thread start];
     }
+    if ([completion respondsToSelector:@selector(description)]) {
+        NSLog(@"1 %@", [completion description]);
+    }
+    
+    if ([completion isKindOfClass:[NSObject class]]) {
+        NSLog(@"2 %@", [completion class]);
+    }
+    
 }
 
 - (void)dealloc {

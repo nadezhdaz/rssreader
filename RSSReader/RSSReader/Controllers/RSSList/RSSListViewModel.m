@@ -79,14 +79,18 @@
     [self.service retrieveFeed:^(NSString *title, NSArray<RSSEntry *> *entries, NSError *error) {
         if (entries) {
             weakSelf.topicsList = [entries mutableCopy];
-            weakSelf.title = title;
+            weakSelf.title = [[NSString alloc] initWithString:title];
             weakSelf.networkError = nil;
-            [weakSelf.viewDelegate didFinishLoading];
+            if ([weakSelf.viewDelegate respondsToSelector:@selector(didFinishLoading)]) {
+                [weakSelf.viewDelegate didFinishLoading];
+            }
         } else {
             weakSelf.topicsList = nil;
             weakSelf.networkError = error;
             NSString *message = [weakSelf errorMessage:error];
-            [weakSelf.viewDelegate didFailWithErrorMessage:message];
+            if ([weakSelf.viewDelegate respondsToSelector:@selector(didFailWithErrorMessage:)]) {
+                [weakSelf.viewDelegate didFailWithErrorMessage:message];
+            }
         }
     }];
 }

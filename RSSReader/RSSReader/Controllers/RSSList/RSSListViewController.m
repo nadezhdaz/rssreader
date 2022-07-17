@@ -71,13 +71,13 @@
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.listTableView = tableView;
     
-    [self.view addSubview:self.listTableView];
+    [self.view addSubview:tableView];
     
     [NSLayoutConstraint activateConstraints:@[
-        [self.listTableView.topAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.topAnchor constant:0.0],
-        [self.listTableView.leadingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.leadingAnchor constant:0.0],
-        [self.listTableView.trailingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.trailingAnchor constant:0.0],
-        [self.listTableView.bottomAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.bottomAnchor constant:0.0]
+        [tableView.topAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.topAnchor constant:0.0],
+        [tableView.leadingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.leadingAnchor constant:0.0],
+        [tableView.trailingAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.trailingAnchor constant:0.0],
+        [tableView.bottomAnchor constraintEqualToAnchor: self.view.safeAreaLayoutGuide.bottomAnchor constant:0.0]
     ]];
 }
 
@@ -97,12 +97,11 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
     }
     
-    RSSEntry *entry = [self.viewModel topicForIndex:indexPath.row];
-    RSSEntry *entryData = [entry retain];
+    RSSEntry *entry = [[self.viewModel topicForIndex:indexPath.row] retain];
     cell.textLabel.numberOfLines = 0;
-    cell.textLabel.text = entryData.title;
+    cell.textLabel.text = entry.title;
     cell.textLabel.textColor = UIColor.darkGrayColor;
-    [entryData release];
+    [entry release];
     
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
